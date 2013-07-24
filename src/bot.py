@@ -14,7 +14,7 @@ from collections import deque
 FORMAT=u'%(name)s %(thread)d  %(levelname)s: %(message)s'
 logging.basicConfig(format=FORMAT, level=logging.INFO)
 logging.getLogger('').setLevel(logging.INFO)
-logging.getLogger('app').setLevel(logging.DEBUG)
+logging.getLogger('app').setLevel(logging.INFO)
 logging.getLogger('handlers').setLevel(logging.INFO)
 logging.getLogger('SkypeMessenger').setLevel(logging.INFO)
 
@@ -35,9 +35,9 @@ class QuizBot:
         #период неповторения вопроса
         self.quest_between = "-2 hours"
         #период до второй подсказки (сек)
-        self.hint_timeout = 10
+        self.hint_timeout = 15
         #период до ответа
-        self.answer_timeout = 15
+        self.answer_timeout = 25
         #Бот не остановлен
         self.running = False
         #Активность викторины
@@ -94,7 +94,7 @@ class QuizBot:
                                   datetime.timedelta(seconds=2),
                                     "action": 'new_question',
                                     "chat": self.context.Chat.Name})
-                                if action["action"] == "hint":
+                                elif action["action"] == "hint":
                                     len_answer = \
                                             int(len(self.current_answer[chat.Name]))
                                     len_hint = int(1.5 * len_answer / 4)
